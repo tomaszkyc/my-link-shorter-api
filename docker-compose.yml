@@ -1,0 +1,52 @@
+version: "3"
+services:
+  app-server:
+    build:
+      context: .
+      dockerfile: resources/docker/app-server.Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    links:
+      - app-db
+    depends_on:
+      - app-db
+    networks:
+      - backend
+    container_name: app
+  app-db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    volumes:
+      - ./resources/db/db-initialization-scripts:/db-initialization-scripts/
+    ports:
+      - "1433:1433"
+    expose:
+      - "1433"
+    networks:
+      - backend
+    container_name: app-db
+    command:
+      - /bin/bash
+      - -c
+      - |
+        # Launch MSSQL and send to background
+        /opt/mssql/bin/sqlservr &
+        # Wait 30 seconds for it to be available
+        # (lame, I know, but there's no nc available to start prodding network ports)
+        sleep 30
+        # Run every script in /db-initialization-scripts
+        # TODO set a flag so that this is only done once on creation,
+        #      and not every time the container runs
+        for foo in /db-initialization-scripts/*.sql
+          do /opt/mssql-tools/bin/sqlcmd -U sa -P $$SA_PASSWORD -l 30 -e -i $$foo
+        done
+        # So that the container doesn't shut down, sleep this thread
+        sleep infinity
+
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:

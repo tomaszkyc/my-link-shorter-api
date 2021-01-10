@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <!-- custom properties -->
+    <property name="LOG_DIR" value="./logs" />
+
+    <!-- config for local development env -->
+    <springProfile name="dev">
+
+        <!-- appenders -->
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n
+                </pattern>
+            </encoder>
+        </appender>
+
+        <!-- loggers -->
+        <Logger name="com.linkshorter.app.core" level="debug" addditivity="false">
+            <appender-ref ref="STDOUT" />
+        </Logger>
+        <Logger name="com.linkshorter.app.features" level="debug" addditivity="false">
+            <appender-ref ref="STDOUT" />
+        </Logger>
+        <logger name="org.hibernate.type.descriptor.sql" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT" />
+        </logger>
+        <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT" />
+        </logger>
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+            <appender-ref ref="STDOUT" />
+        </logger>
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+
+    </springProfile>
+
+
+    <!-- config for local production env -->
+    <springProfile name="prod">
+
+        <!-- appenders -->
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n
+                </pattern>
+            </encoder>
+        </appender>
+
+        <!-- loggers -->
+        <Logger name="com.linkshorter.app.core" level="debug" addditivity="false">
+            <appender-ref ref="STDOUT" />
+        </Logger>
+        <Logger name="com.linkshorter.app.features" level="debug" addditivity="false">
+            <appender-ref ref="STDOUT" />
+        </Logger>
+        <logger name="org.hibernate.type.descriptor.sql" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT" />
+        </logger>
+        <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT" />
+        </logger>
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+
+    </springProfile>
+
+
+</configuration>

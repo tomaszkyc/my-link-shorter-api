@@ -1,0 +1,55 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    database: sql_server
+  datasource:
+    url: jdbc:sqlserver://app-db;databaseName=app
+    username: sa
+    password: Your_password123
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: <REQUIRED_FIELD>
+    password: <REQUIRED_FIELD>
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+server:
+  port: 8080
+
+# app properties
+app:
+  jwt:
+    secret: mysecret
+    expiration-time: 86400000
+  security:
+    admin-password: password
+  mail:
+    from-mail-address: <REQUIRED_FIELD>
+    from-mail-displayname: mylinkshorter.com no reply
+    custom-email-template-parameters: '{
+      "@application-link@": "http://localhost:4200",
+      "@contact-form-email@": "mylinkshorternoreply@gmail.com"
+    }'
+  payment:
+    tpay: '{
+      "payment-client-id": "1010",
+      "payment-client-secret": "demo",
+      "payment-base-url": "https://secure.tpay.com",
+      "payment-success-endpoint": "http://localhost:4200/app/receipts-and-payments/payment/@crc@/success",
+      "payment-failure-endpoint": "http://localhost:4200/app/receipts-and-payments/payment/@crc@/failure"
+    }'
+  invoice:
+    seller-information: '{
+      "seller-name": "mylinkshorter.com",
+      "seller-address": "Chmielna XX/XX, XX-XXX Warszawa, Polska",
+      "seller-tax-identifier": "PLXXXXXXXXXXX"
+    }'

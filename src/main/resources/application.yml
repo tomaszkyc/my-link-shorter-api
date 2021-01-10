@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: prod
+    include: application-${spring.profiles.active}
+info:
+  app:
+    version: 1.0.0

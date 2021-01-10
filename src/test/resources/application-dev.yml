@@ -1,0 +1,62 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: sql_server
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    platform: h2
+
+  # enable H2 web console and set url for web console
+  # http://localhost:8080/console
+  h2:
+    console:
+      enabled: true
+      path: /console
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: <REQUIRED_FIELD>
+    password: <REQUIRED_FIELD>
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+server:
+  port: 8080
+
+# app properties
+app:
+  jwt:
+    secret: mysecret
+    expiration-time: 86400000
+  security:
+    admin-password: password
+  mail:
+    from-mail-address: <REQUIRED_FIELD>
+    from-mail-displayname: mylinkshorter.com no reply
+    custom-email-template-parameters: '{
+      "@application-link@": "http://localhost:4200",
+      "@contact-form-email@": "mylinkshorternoreply@gmail.com"
+    }'
+  payment:
+    tpay: '{
+      "payment-client-id": "1010",
+      "payment-client-secret": "demo",
+      "payment-base-url": "https://secure.tpay.com",
+      "payment-success-endpoint": "http://localhost:4200/app/payment/@crc@/success",
+      "payment-failure-endpoint": "http://localhost:4200/app/payment/@crc@/failure"
+    }'
+  invoice:
+    seller-information: '{
+      "seller-name": "mylinkshorter.com",
+      "seller-address": "Chmielna 85/87, 00-805 Warszawa, Polska",
+      "seller-tax-identifier": "PL5272700901"
+    }'
